@@ -6,21 +6,18 @@ class ShopPage extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { collections: SHOP_DATA };
+        this.state = {
+            collections: SHOP_DATA,
+        };
     }
+
     render() {
         const { collections } = this.state;
         return (
             <div className="shop-page">
-                {collections
-                    .filter((item, idx) => idx < 4)
-                    .map(({ id, title, items }) => (
-                        <CollectionPreview
-                            key={id}
-                            title={title}
-                            items={items}
-                        />
-                    ))}
+                {collections.map(({ id, ...otherCollectionProps }) => (
+                    <CollectionPreview key={id} {...otherCollectionProps} />
+                ))}
             </div>
         );
     }
