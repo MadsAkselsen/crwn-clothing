@@ -3,6 +3,7 @@ import './App.css';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from './pages/homepage/homepage.component';
+import ShopPage from './pages/shop/shop.component';
 
 const HatsPage = () => (
     <div>
@@ -16,7 +17,7 @@ function App() {
             <Switch>
                 {/* Note: when a component is added to the component={myComponent} it gets passed three arguments: history, location and match  */}
                 <Route exact path="/" component={HomePage} />
-                <Route exact path="/shop" component={HomePage} />
+                <Route exact path="/shop" component={ShopPage} />
                 <Route exact path="/shop/:topId" component={HatsPage} />
             </Switch>
         </div>
