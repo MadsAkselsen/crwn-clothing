@@ -19,14 +19,36 @@ class App extends React.Component {
 
     unsubscribeFromAuth = null;
 
+    // These things happen in componentDidMount:
+    // 1. check if user is logged in (authorized)
+    // 2. check if user exists in database (and create in db if not)
+    // 3. listen for changes in on the user in db
+    // 4. set the state based on user data in db
+
     componentDidMount() {
         // auth.onAuthStateChanged returns a function for unsubscribing
-        this.unsubscribeFromAuth = auth.onAuthStateChanged(async (user) => {
-            createUserProfileDocument(user);
+        this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+            if (userAuth) {
+                const userRef = await createUserProfileDocument(userAuth);
 
-            this.setState({ currentUser: user });
-
-            console.log(user);
+                // onSnapShot is like the above onAuthStateChanged. It's a listener
+                // listening for changes for this user in the database
+                userRef.onSnapshot((snapshot) => {
+                    this.setState(
+                        {
+                            currentUser: {
+                                id: snapshot.id,
+                                ...snapshot.data(), // the data() method gives the data that we stored in the database on the user snapshot
+                            },
+                        },
+                        () => {
+                            console.log(this.state);
+                        }
+                    );
+                });
+            } else {
+                this.setState({ currentUser: userAuth }); // here user is gonna be null, because user is not logged in
+            }
         });
     }
 
