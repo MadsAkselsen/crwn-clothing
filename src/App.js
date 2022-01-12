@@ -40,7 +40,7 @@ class App extends React.Component {
                             ...snapshot.data(), // the data() method gives the data that we stored in the database on the user snapshot
                         },
                     });
-                    console.log('state', this.state);
+                    console.log('user: ', this.state);
                 });
             } else {
                 this.setState({ currentUser: userAuth }); // here user is gonna be null, because user is not logged in
