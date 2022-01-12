@@ -34,17 +34,13 @@ class App extends React.Component {
                 // onSnapShot is like the above onAuthStateChanged. It's a listener
                 // listening for changes for this user in the database
                 userRef.onSnapshot((snapshot) => {
-                    this.setState(
-                        {
-                            currentUser: {
-                                id: snapshot.id,
-                                ...snapshot.data(), // the data() method gives the data that we stored in the database on the user snapshot
-                            },
+                    this.setState({
+                        currentUser: {
+                            id: snapshot.id,
+                            ...snapshot.data(), // the data() method gives the data that we stored in the database on the user snapshot
                         },
-                        () => {
-                            console.log(this.state);
-                        }
-                    );
+                    });
+                    console.log('state', this.state);
                 });
             } else {
                 this.setState({ currentUser: userAuth }); // here user is gonna be null, because user is not logged in
