@@ -7,16 +7,10 @@ import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import { connect } from 'react-redux';
+import { setCurrentUser } from './redux/user/user.actions';
 
 class App extends React.Component {
-    constructor() {
-        super();
-
-        this.state = {
-            currentUser: null,
-        };
-    }
-
     unsubscribeFromAuth = null;
 
     // These things happen in componentDidMount:
@@ -26,6 +20,7 @@ class App extends React.Component {
     // 4. set the state based on user data in db
 
     componentDidMount() {
+        const { setCurrentUser } = this.props;
         // auth.onAuthStateChanged returns a function for unsubscribing
         this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
             if (userAuth) {
@@ -34,16 +29,13 @@ class App extends React.Component {
                 // onSnapShot is like the above onAuthStateChanged. It's a listener
                 // listening for changes for this user in the database
                 userRef.onSnapshot((snapshot) => {
-                    this.setState({
-                        currentUser: {
-                            id: snapshot.id,
-                            ...snapshot.data(), // the data() method gives the data that we stored in the database on the user snapshot
-                        },
+                    setCurrentUser({
+                        id: snapshot.id,
+                        ...snapshot.data(), // the data() method gives the data that we stored in the database on the user snapshot
                     });
-                    console.log('user: ', this.state);
                 });
             } else {
-                this.setState({ currentUser: userAuth }); // here user is gonna be null, because user is not logged in
+                setCurrentUser(userAuth); // here user is gonna be null, because user is not logged in
             }
         });
     }
@@ -67,4 +59,9 @@ class App extends React.Component {
     }
 }
 
-export default App;
+// makes the actions freely available as props in this component
+const mapDispatchToProps = (dispatch) => ({
+    setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(App);
