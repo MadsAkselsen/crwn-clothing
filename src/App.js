@@ -55,7 +55,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <Header currentUser={this.state.currentUser} />
+                <Header />
                 <Switch>
                     {/* Note: when a component is added to the component={myComponent} it gets passed three arguments: history, location and match  */}
                     <Route exact path="/" component={HomePage} />
