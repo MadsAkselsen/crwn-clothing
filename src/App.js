@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selector';
 import { createStructuredSelector } from 'reselect';
+import CheckoutPage from './pages/checkout/checkout.component';
 
 class App extends React.Component {
     unsubscribeFromAuth = null;
@@ -54,6 +55,7 @@ class App extends React.Component {
                     {/* Note: when a component is added to the component={myComponent} it gets passed three arguments: history, location and match  */}
                     <Route exact path="/" component={HomePage} />
                     <Route path="/shop" component={ShopPage} />
+                    <Route exact path="/checkout" component={CheckoutPage} />
                     <Route
                         exact
                         path="/signin"
