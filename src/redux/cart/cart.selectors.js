@@ -11,6 +11,11 @@ export const selectCartItems = createSelector(
     (cart) => cart.cartItems
 );
 
+export const selectCartHidden = createSelector(
+    [selectCart],
+    (cart) => cart.hidden
+);
+
 // the selector(s): If this part doesn't change, then the function
 // in the second argument won't run, but instead return the cached value
 // so if cartItems are the same, then don't run the reducer in selectCartItemsCount()
