@@ -1,10 +1,17 @@
 import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
+import { persistStore } from 'redux-persist';
 
 import rootReducer from './root-reducer';
 
 const middlewares = [logger];
 
-const store = createStore(rootReducer, applyMiddleware(...middlewares));
+// bonus info: we technically don't need the export in front of store and persistor because
+// they are also exported as default in the bottom. This is just something yihua did in the videos
 
-export default store;
+export const store = createStore(rootReducer, applyMiddleware(...middlewares));
+
+// used for persisting the store in localStorage and sessionStorage
+export const persistor = persistStore(store);
+
+export default { store, persistor };
