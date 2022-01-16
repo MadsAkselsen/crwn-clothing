@@ -6,6 +6,7 @@ import { persistReducer } from 'redux-persist';
 // The actual localStorage on the window object
 // This is telling redux to use localStorage as default storage
 import storage from 'redux-persist/lib/storage';
+import directoryReducer from './directory/directory.reducer';
 
 const persistConfig = {
     key: 'root', // from where to start storing data
@@ -16,6 +17,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     user: userReducer,
     cart: cartReducer,
+    directory: directoryReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);
