@@ -3,6 +3,10 @@ import { createSelector } from 'reselect';
 // the selector is the part of the state to focus on.
 // Multiple selectors can be added to the below  array of selectors
 
+// generelly this memo stuff in used on logic that is used in render()
+// it's not used on logic that is only run once on certain actions
+// like add or remove item on click
+
 const selectCart = (state) => state.cart;
 
 // only rerenders list of cart items of that the cart part of the state changes

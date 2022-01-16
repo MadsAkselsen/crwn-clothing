@@ -14,3 +14,23 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
     // if item doesnt yet exist in cart
     return [...cartItems, { ...cartItemToAdd, quantity: 1 }];
 };
+
+export const removeItemFromCart = (cartItems, cartItemToRemove) => {
+    const existingCartItem = cartItems.find(
+        (cartItem) => cartItem.id === cartItemToRemove.id
+    );
+
+    // remove item from cart completely
+    if (existingCartItem.quantity === 1) {
+        return cartItems.filter(
+            (cartItem) => cartItem.id !== cartItemToRemove.id
+        );
+    }
+
+    // item already has several quantity, so just reduce quantity
+    return cartItems.map((cartItem) =>
+        cartItem.id === cartItemToRemove.id
+            ? { ...cartItem, quantity: cartItem.quantity - 1 }
+            : cartItem
+    );
+};
