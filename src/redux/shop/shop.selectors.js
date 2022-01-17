@@ -1,19 +1,17 @@
 import { createSelector } from 'reselect';
 import memoize from 'lodash.memoize';
 
-const COLLECTION_ID_MAP = {
-    hats: 1,
-    sneakers: 2,
-    jackets: 3,
-    womens: 4,
-    mens: 5,
-};
-
 const selectShop = (state) => state.shop;
 
 export const selectCollections = createSelector(
     [selectShop],
     (shop) => shop.collections
+);
+
+// convert data object to array
+export const selectCollectionsForPreview = createSelector(
+    [selectCollections],
+    (collections) => Object.keys(collections).map((key) => collections[key])
 );
 
 // The below selectCollection is a bit different because it returns a
@@ -42,10 +40,9 @@ export const selectCollections = createSelector(
 // don't rerun this function because we'll return the same value as last
 // time, which we've memoized so just return the selector that's been stored.
 export const selectCollection = memoize((collectionUrlParam) => {
-    return createSelector([selectCollections], (collections) =>
-        collections.find(
-            (collection) =>
-                collection.id === COLLECTION_ID_MAP[collectionUrlParam]
-        )
+    console.log('===', collectionUrlParam);
+    return createSelector(
+        [selectCollections],
+        (collections) => collections[collectionUrlParam]
     );
 });
