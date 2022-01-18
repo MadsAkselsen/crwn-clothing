@@ -6,7 +6,7 @@
 
 -   React
 -   redux
--   reselect for memoization
+-   reselect (memoization)
 
 ### Backend
 
