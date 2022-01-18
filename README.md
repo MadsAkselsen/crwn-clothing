@@ -1,4 +1,4 @@
-Web Shop
+# Web Shop for learning to create react apps
 
 ## Tech used
 
@@ -10,9 +10,9 @@ Web Shop
 
 ### Backend
 
--   firebase
+-   firebase (database and login)
+-   Heroku (hosting)
 
 ### Other
 
--   Stripe for handling payments
--   Heroku for hosting the web app
+-   Stripe (handling payments)
