@@ -10,7 +10,7 @@
 
 ### Backend
 
--   firebase (database and login)
+-   firebase (database and user login)
 -   Heroku (hosting)
 
 ### Other
