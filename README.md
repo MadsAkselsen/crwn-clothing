@@ -7,6 +7,7 @@
 -   React
 -   redux
 -   reselect (memoization)
+-   Styled Components
 
 ### Backend
 
