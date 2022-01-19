@@ -12,7 +12,6 @@ import './cart-dropdown.styles.scss';
 
 // dispatch is coming from the connect in the bottom
 const CartDropdown = ({ cartItems, history, dispatch }) => {
-    console.log('history', history);
     return (
         <div className="cart-dropdown">
             <div className="cart-items">

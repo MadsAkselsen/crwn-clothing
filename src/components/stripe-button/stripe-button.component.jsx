@@ -12,7 +12,6 @@ const StripeCheckoutButton = ({ price }) => {
     // but we're just testing, so we can just fake it here
     // in the frontend
     const onToken = (token) => {
-        console.log(token);
         alert('Payment Successful');
     };
 

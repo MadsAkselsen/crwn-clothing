@@ -40,7 +40,6 @@ export const selectCollectionsForPreview = createSelector(
 // don't rerun this function because we'll return the same value as last
 // time, which we've memoized so just return the selector that's been stored.
 export const selectCollection = memoize((collectionUrlParam) => {
-    console.log('===', collectionUrlParam);
     return createSelector(
         [selectCollections],
         (collections) => collections[collectionUrlParam]
