@@ -1,10 +1,6 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-const spanWidthStyles = css`
-    width: 23%;
-`;
-
-export const CheckoutItemStyled = styled.div`
+export const CheckoutItemContainer = styled.div`
     width: 100%;
     display: flex;
     min-height: 100px;
@@ -14,38 +10,30 @@ export const CheckoutItemStyled = styled.div`
     align-items: center;
 `;
 
-export const ImageContainerStyled = styled.div`
+export const ImageContainer = styled.div`
     width: 23%;
     padding-right: 15px;
+    img {
+        width: 100%;
+        height: 100%;
+    }
 `;
 
-export const ImgStyled = styled.img`
-    width: 100%;
-    height: 100%;
+export const TextContainer = styled.span`
+    width: 23%;
 `;
 
-export const NameStyled = styled.span`
-    ${spanWidthStyles}
-`;
-
-export const QuantityStyled = styled.span`
-    ${spanWidthStyles}
+export const QuantityContainer = styled(TextContainer)`
     display: flex;
+    span {
+        margin: 0 10px;
+    }
+    div {
+        cursor: pointer;
+    }
 `;
 
-export const PriceStyled = styled.span`
-    ${spanWidthStyles}
-`;
-
-export const ArrowStyled = styled.div`
-    cursor: pointer;
-`;
-
-export const ValueStyled = styled.span`
-    margin: 0 10px;
-`;
-
-export const RemoveButtonStyled = styled.div`
+export const RemoveButtonContainer = styled.div`
     padding-left: 12px;
     cursor: pointer;
 `;

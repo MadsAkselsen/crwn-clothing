@@ -1,44 +1,38 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import {
-    addItem,
     clearItemFromCart,
+    addItem,
     removeItem,
 } from '../../redux/cart/cart.actions';
+
 import {
-    ArrowStyled,
-    CheckoutItemStyled,
-    ImageContainerStyled,
-    ImgStyled,
-    NameStyled,
-    PriceStyled,
-    QuantityStyled,
-    RemoveButtonStyled,
-    ValueStyled,
+    CheckoutItemContainer,
+    ImageContainer,
+    TextContainer,
+    QuantityContainer,
+    RemoveButtonContainer,
 } from './checkout-item.styles';
 
 const CheckoutItem = ({ cartItem, clearItem, addItem, removeItem }) => {
     const { name, imageUrl, price, quantity } = cartItem;
     return (
-        <CheckoutItemStyled>
-            <ImageContainerStyled>
-                <ImgStyled src={imageUrl} alt="item" />
-            </ImageContainerStyled>
-            <NameStyled>{name}</NameStyled>
-            <QuantityStyled>
-                <ArrowStyled onClick={() => removeItem(cartItem)}>
-                    &#10094;
-                </ArrowStyled>
-                <ValueStyled>{quantity}</ValueStyled>
-                <ArrowStyled onClick={() => addItem(cartItem)}>
-                    &#10095;
-                </ArrowStyled>
-            </QuantityStyled>
-            <PriceStyled>{price}</PriceStyled>
-            <RemoveButtonStyled onClick={() => clearItem(cartItem)}>
+        <CheckoutItemContainer>
+            <ImageContainer>
+                <img src={imageUrl} alt="item" />
+            </ImageContainer>
+            <TextContainer>{name}</TextContainer>
+            <QuantityContainer>
+                <div onClick={() => removeItem(cartItem)}>&#10094;</div>
+                <span>{quantity}</span>
+                <div onClick={() => addItem(cartItem)}>&#10095;</div>
+            </QuantityContainer>
+            <TextContainer>{price}</TextContainer>
+            <RemoveButtonContainer onClick={() => clearItem(cartItem)}>
                 &#10005;
-            </RemoveButtonStyled>
-        </CheckoutItemStyled>
+            </RemoveButtonContainer>
+        </CheckoutItemContainer>
     );
 };
 
