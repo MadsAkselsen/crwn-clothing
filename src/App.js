@@ -49,7 +49,7 @@ class App extends React.Component {
 
                 // NB!: We only needed this function once to add all the items to the database.
                 // this is so we wouldn't have to enter them there manually. Now that they are
-                // already added we don't need to run this function anymore.
+                // already added we don't need to run this function anymore. We just keep it here for reference.
                 // we don't want to add all properties of the items, only title and items.
                 // So we return a new array with only those two props
                 // addCollectionAndDocuments(
