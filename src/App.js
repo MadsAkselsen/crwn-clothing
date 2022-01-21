@@ -6,12 +6,19 @@ import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+
+import {
+    addCollectionAndDocuments,
+    auth,
+    createUserProfileDocument,
+} from './firebase/firebase.utils';
 import { connect } from 'react-redux';
 import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selector';
+
 import { createStructuredSelector } from 'reselect';
 import CheckoutPage from './pages/checkout/checkout.component';
+import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 
 class App extends React.Component {
     unsubscribeFromAuth = null;
@@ -23,7 +30,7 @@ class App extends React.Component {
     // 4. set the state based on user data in db
 
     componentDidMount() {
-        const { setCurrentUser } = this.props;
+        const { setCurrentUser, collectionsArray } = this.props;
         // auth.onAuthStateChanged returns a function for unsubscribing
         this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
             if (userAuth) {
@@ -39,6 +46,19 @@ class App extends React.Component {
                 });
             } else {
                 setCurrentUser(userAuth); // here user is gonna be null, because user is not logged in
+
+                // NB!: We only needed this function once to add all the items to the database.
+                // this is so we wouldn't have to enter them there manually. Now that they are
+                // already added we don't need to run this function anymore.
+                // we don't want to add all properties of the items, only title and items.
+                // So we return a new array with only those two props
+                // addCollectionAndDocuments(
+                //     'collections',
+                //     collectionsArray.map(({ title, items }) => ({
+                //         title,
+                //         items,
+                //     }))
+                // );
             }
         });
     }
@@ -76,6 +96,7 @@ class App extends React.Component {
 // state is added to the argument, so we destructure user from it
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
+    collectionsArray: selectCollectionsForPreview,
 });
 
 // makes the actions freely available as props in this component

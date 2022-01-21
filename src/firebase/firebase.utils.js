@@ -35,6 +35,17 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     // get queryReference
     const userRef = firestore.doc(`users/${userAuth.multiFactor.user.uid}`);
 
+    // ========= collection
+    const collectionRef = firestore.collection('users');
+    const collectionSnapshot = await collectionRef.get();
+    console.log(
+        'collection',
+        collectionSnapshot._delegate._snapshot.docChanges.map(
+            (doc) => doc.doc.data.value.mapValue.fields
+        )
+    );
+    // ========= collection
+
     // get data on the user document
     const snapShot = await userRef.get();
 
@@ -55,6 +66,34 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         }
     }
     return userRef;
+};
+
+// NB!: We only needed this function once to add all the items to the database.
+// this is so we wouldn't have to enter them there manually. Now that they are
+// already added we don't need to run this function anymore.
+export const addCollectionAndDocuments = async (
+    collectionKey,
+    objectsToAdd
+) => {
+    const collectionRef = firestore.collection(collectionKey);
+    console.log('collectionRef', collectionRef);
+
+    // batch is used for setting multiple items at the same time
+    // If we set each item one at a time, like in the way we set the user with userRef.set,
+    // then the items that fails in being set, will fail, while the successful ones will
+    // be added to the database. We only want to items to be set in database if they
+    // are all succesful, and so we are able to handle this.
+    // So we use batch to make sure this happens
+    const batch = firestore.batch();
+    objectsToAdd.forEach((obj) => {
+        // asks firebase to create an empty document on this collection ref and generate a random id
+        // The argument string in the collectionRef.doc(argument) would be the key, but when empty
+        // firebase creates a random id for us, which is what we want here
+        const newDocRef = collectionRef.doc();
+        batch.set(newDocRef, obj);
+    });
+    //batch.commit fires the batch request returns a promise
+    return await batch.commit();
 };
 
 firebase.initializeApp(config);
