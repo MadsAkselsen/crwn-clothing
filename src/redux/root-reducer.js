@@ -22,4 +22,5 @@ const rootReducer = combineReducers({
     shop: shopReducer,
 });
 
+// the name of this export is still rootReducer when importing it
 export default persistReducer(persistConfig, rootReducer);
