@@ -1,10 +1,11 @@
 import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import { persistStore } from 'redux-persist';
+import thunk from 'redux-thunk';
 
 import rootReducer from './root-reducer';
 
-const middlewares = [];
+const middlewares = [thunk];
 
 // React automatically sets the env to production, development or test.
 // We can therefore choose to console.log the state (logger) only in development
