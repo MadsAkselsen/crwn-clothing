@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import {
     convertCollectionsSnapshotToMap,
     firestore,
@@ -21,7 +21,6 @@ export function* fetchCollectionAsync() {
             convertCollectionsSnapshotToMap,
             snapshot
         );
-
         yield put(fetchCollectionsSuccess(collectionsMap));
     } catch (error) {
         yield put(fetchCollectionsFailure(error.message));
@@ -29,7 +28,14 @@ export function* fetchCollectionAsync() {
 }
 
 export function* fetchCollectionsStart() {
-    yield takeEvery(
+    // Spawns a saga on each action dispatched to the Store that matches pattern.
+    // And automatically cancels any previous saga task started previously if it's still running.
+
+    // Each time an action is dispatched to the store. And if this action matches pattern,
+    // takeLatest starts a new saga task in the background. If a saga task was started
+    // previously (on the last action dispatched before the actual action), and if this task is
+    // still running, the task will be cancelled.
+    yield takeLatest(
         ShopActionTypes.FETCH_COLLECTIONS_START,
         fetchCollectionAsync
     );
