@@ -32,35 +32,19 @@ class App extends React.Component {
     componentDidMount() {
         const { setCurrentUser, collectionsArray } = this.props;
         // auth.onAuthStateChanged returns a function for unsubscribing
-        this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-            if (userAuth) {
-                const userRef = await createUserProfileDocument(userAuth);
-
-                // onSnapShot is like the above onAuthStateChanged. It's a listener
-                // listening for changes for this user in the database
-                userRef.onSnapshot((snapshot) => {
-                    setCurrentUser({
-                        id: snapshot.id,
-                        ...snapshot.data(), // the data() method gives the data that we stored in the database on the user snapshot
-                    });
-                });
-            } else {
-                setCurrentUser(userAuth); // here user is gonna be null, because user is not logged in
-
-                // NB!: We only needed this function once to add all the items to the database.
-                // this is so we wouldn't have to enter them there manually. Now that they are
-                // already added we don't need to run this function anymore. We just keep it here for reference.
-                // we don't want to add all properties of the items, only title and items.
-                // So we return a new array with only those two props
-                // addCollectionAndDocuments(
-                //     'collections',
-                //     collectionsArray.map(({ title, items }) => ({
-                //         title,
-                //         items,
-                //     }))
-                // );
-            }
-        });
+        // this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+        //     if (userAuth) {
+        //         const userRef = await createUserProfileDocument(userAuth);
+        //         userRef.onSnapshot((snapshot) => {
+        //             setCurrentUser({
+        //                 id: snapshot.id,
+        //                 ...snapshot.data(),
+        //             });
+        //         });
+        //     } else {
+        //         setCurrentUser(userAuth);
+        //     }
+        // });
     }
 
     componentWillUnmount() {
