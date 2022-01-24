@@ -5,6 +5,8 @@ import CustomButton from '../custom-button/custom-button.component';
 import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
 
 import './sign-up.styles.scss';
+import { connect } from 'react-redux';
+import { signUpStart } from '../../redux/user/user.actions';
 
 class SignUp extends React.Component {
     constructor() {
@@ -21,6 +23,7 @@ class SignUp extends React.Component {
     handleSubmit = async (event) => {
         event.preventDefault();
 
+        const { signUpStart } = this.props;
         const { displayName, email, password, confirmPassword } = this.state;
 
         if (password !== confirmPassword) {
@@ -28,30 +31,7 @@ class SignUp extends React.Component {
             return;
         }
 
-        try {
-            const { user } = await auth.createUserWithEmailAndPassword(
-                email,
-                password
-            );
-
-            // createUserProfileDocument() is actually first running from the app component, because changes in the
-            // auth triggers this. So the user is actually first create in DB without displayName, since this is not
-            // set in this sign-up component.
-            // but running createUserProfileDocument() the second time in this sign-up component will add the
-            // displayName to the DB user data. Several userRef.set(...) will merge the provided info together in DB
-            await createUserProfileDocument(user, {
-                displayName,
-            });
-
-            this.setState({
-                displayName: '',
-                email: '',
-                password: '',
-                confirmPassword: '',
-            });
-        } catch (error) {
-            console.error(error);
-        }
+        signUpStart({ displayName, email, password });
     };
 
     handleChange = (event) => {
@@ -107,4 +87,8 @@ class SignUp extends React.Component {
     }
 }
 
-export default SignUp;
+const mapDispatchToProps = (dispatch) => ({
+    signUpStart: (userCredentials) => dispatch(signUpStart(userCredentials)),
+});
+
+export default connect(null, mapDispatchToProps)(SignUp);
