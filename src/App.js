@@ -7,13 +7,8 @@ import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 
-import {
-    addCollectionAndDocuments,
-    auth,
-    createUserProfileDocument,
-} from './firebase/firebase.utils';
 import { connect } from 'react-redux';
-import { setCurrentUser } from './redux/user/user.actions';
+import { checkUserSession, setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selector';
 
 import { createStructuredSelector } from 'reselect';
@@ -23,49 +18,12 @@ import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 class App extends React.Component {
     unsubscribeFromAuth = null;
 
-    // These things happen in componentDidMount:
-    // 1. check if user is logged in (authorized)
-    // 2. check if user exists in database (and create in db if not)
-    // 3. listen for changes in on the user in db
-    // 4. set the state based on user data in db
-
     componentDidMount() {
-        const { setCurrentUser, collectionsArray } = this.props;
-        // auth.onAuthStateChanged returns a function for unsubscribing
-        this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-            if (userAuth) {
-                const userRef = await createUserProfileDocument(userAuth);
-
-                // onSnapShot is like the above onAuthStateChanged. It's a listener
-                // listening for changes for this user in the database
-                userRef.onSnapshot((snapshot) => {
-                    setCurrentUser({
-                        id: snapshot.id,
-                        ...snapshot.data(), // the data() method gives the data that we stored in the database on the user snapshot
-                    });
-                });
-            } else {
-                setCurrentUser(userAuth); // here user is gonna be null, because user is not logged in
-
-                // NB!: We only needed this function once to add all the items to the database.
-                // this is so we wouldn't have to enter them there manually. Now that they are
-                // already added we don't need to run this function anymore. We just keep it here for reference.
-                // we don't want to add all properties of the items, only title and items.
-                // So we return a new array with only those two props
-                // addCollectionAndDocuments(
-                //     'collections',
-                //     collectionsArray.map(({ title, items }) => ({
-                //         title,
-                //         items,
-                //     }))
-                // );
-            }
-        });
+        const { checkUserSession } = this.props;
+        checkUserSession();
     }
 
-    componentWillUnmount() {
-        this.unsubscribeFromAuth();
-    }
+    componentWillUnmount() {}
 
     render() {
         return (
@@ -99,9 +57,8 @@ const mapStateToProps = createStructuredSelector({
     collectionsArray: selectCollectionsForPreview,
 });
 
-// makes the actions freely available as props in this component
 const mapDispatchToProps = (dispatch) => ({
-    setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+    checkUserSession: () => dispatch(checkUserSession()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
