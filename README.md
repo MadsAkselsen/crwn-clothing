@@ -6,6 +6,7 @@
 
 -   React
 -   redux
+-   redux saga
 -   reselect (memoization)
 -   Styled Components
 
