@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Route } from 'react-router-dom';
 
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
@@ -9,10 +9,12 @@ import CollectionPageContainer from '../categories/collection.container';
 
 // ShopPage is nested inside a route in the App, so it
 // automatically has access to history etc...
-const ShopPage = ({ fetchCollectionsStart, match }) => {
+const ShopPage = ({ match }) => {
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        fetchCollectionsStart();
-    }, [fetchCollectionsStart]);
+        dispatch(fetchCollectionsStart());
+    }, [dispatch]);
 
     // const { loading } = this.state;
     return (
@@ -31,8 +33,8 @@ const ShopPage = ({ fetchCollectionsStart, match }) => {
     );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchCollectionsStart: () => dispatch(fetchCollectionsStart(dispatch)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//     fetchCollectionsStart: () => dispatch(fetchCollectionsStart(dispatch)),
+// });
 
-export default connect(null, mapDispatchToProps)(ShopPage);
+export default ShopPage;

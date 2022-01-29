@@ -7,7 +7,7 @@ import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 
-import { connect } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import { checkUserSession } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selector';
 
@@ -15,10 +15,14 @@ import { createStructuredSelector } from 'reselect';
 import CheckoutPage from './pages/checkout/checkout.component';
 import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 
-const App = ({ checkUserSession, currentUser, collectionsArray }) => {
+const App = () => {
+    const currentUser = useSelector(selectCurrentUser);
+    const dispatch = useDispatch();
+    //const checkUserSessionHandler = () => dispatch(checkUserSession())
+
     useEffect(() => {
-        checkUserSession();
-    }, [checkUserSession]);
+        dispatch(checkUserSession());
+    }, [dispatch]);
 
     return (
         <div>
@@ -45,13 +49,13 @@ const App = ({ checkUserSession, currentUser, collectionsArray }) => {
 };
 
 // state is added to the argument, so we destructure user from it
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser,
-    collectionsArray: selectCollectionsForPreview,
-});
+// const mapStateToProps = createStructuredSelector({
+//     currentUser: selectCurrentUser,
+//     collectionsArray: selectCollectionsForPreview,
+// });
 
-const mapDispatchToProps = (dispatch) => ({
-    checkUserSession: () => dispatch(checkUserSession()),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//     checkUserSession: () => dispatch(checkUserSession()),
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
