@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
@@ -7,58 +7,55 @@ import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 
-import { connect } from 'react-redux';
-import { checkUserSession, setCurrentUser } from './redux/user/user.actions';
+import { connect, useSelector, useDispatch } from 'react-redux';
+import { checkUserSession } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selector';
 
 import { createStructuredSelector } from 'reselect';
 import CheckoutPage from './pages/checkout/checkout.component';
 import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 
-class App extends React.Component {
-    unsubscribeFromAuth = null;
+const App = () => {
+    const currentUser = useSelector(selectCurrentUser);
+    const dispatch = useDispatch();
+    //const checkUserSessionHandler = () => dispatch(checkUserSession())
 
-    componentDidMount() {
-        const { checkUserSession } = this.props;
-        checkUserSession();
-    }
+    useEffect(() => {
+        dispatch(checkUserSession());
+    }, [dispatch]);
 
-    componentWillUnmount() {}
-
-    render() {
-        return (
-            <div>
-                <Header />
-                <Switch>
-                    {/* Note: when a component is added to the component={myComponent} it gets passed three arguments: history, location and match  */}
-                    <Route exact path="/" component={HomePage} />
-                    <Route path="/shop" component={ShopPage} />
-                    <Route exact path="/checkout" component={CheckoutPage} />
-                    <Route
-                        exact
-                        path="/signin"
-                        render={() =>
-                            this.props.currentUser ? (
-                                <Redirect to="/" /> // if user is signed in, then redirect to home page
-                            ) : (
-                                <SignInAndSignUpPage />
-                            )
-                        }
-                    />
-                </Switch>
-            </div>
-        );
-    }
-}
+    return (
+        <div>
+            <Header />
+            <Switch>
+                {/* Note: when a component is added to the component={myComponent} it gets passed three arguments: history, location and match  */}
+                <Route exact path="/" component={HomePage} />
+                <Route path="/shop" component={ShopPage} />
+                <Route exact path="/checkout" component={CheckoutPage} />
+                <Route
+                    exact
+                    path="/signin"
+                    render={() =>
+                        currentUser ? (
+                            <Redirect to="/" /> // if user is signed in, then redirect to home page
+                        ) : (
+                            <SignInAndSignUpPage />
+                        )
+                    }
+                />
+            </Switch>
+        </div>
+    );
+};
 
 // state is added to the argument, so we destructure user from it
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser,
-    collectionsArray: selectCollectionsForPreview,
-});
+// const mapStateToProps = createStructuredSelector({
+//     currentUser: selectCurrentUser,
+//     collectionsArray: selectCollectionsForPreview,
+// });
 
-const mapDispatchToProps = (dispatch) => ({
-    checkUserSession: () => dispatch(checkUserSession()),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//     checkUserSession: () => dispatch(checkUserSession()),
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
