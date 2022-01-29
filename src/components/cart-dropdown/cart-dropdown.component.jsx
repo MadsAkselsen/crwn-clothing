@@ -1,9 +1,9 @@
 import React from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCartItems } from '../../redux/cart/cart.selectors';
 import CartItem from '../cart-item/cart-item.component';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import { toggleCartHidden } from '../../redux/cart/cart.actions';
 
 import {
@@ -14,8 +14,11 @@ import {
 } from './cart-dropdown.styles';
 
 // dispatch is coming from the connect in the bottom
-const CartDropdown = ({ history, dispatch }) => {
+const CartDropdown = () => {
     const cartItems = useSelector(selectCartItems);
+    const dispatch = useDispatch();
+    const history = useHistory();
+
     return (
         <CartDropdownStyles>
             <CartItemsStyles>
@@ -46,4 +49,4 @@ const CartDropdown = ({ history, dispatch }) => {
 // withRouter has to wrap around. It wouldn't work if connect were the one wrapped around withRouter
 // export default withRouter(connect(mapStateToProps)(CartDropdown));
 
-export default withRouter(CartDropdown);
+export default CartDropdown;
