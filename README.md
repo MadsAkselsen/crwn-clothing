@@ -13,8 +13,6 @@
 ### Backend
 
 -   firebase (database and user login)
+-   express (server)
 -   Heroku (hosting)
-
-### Other
-
 -   Stripe (handling payments)
