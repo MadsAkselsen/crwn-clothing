@@ -4,15 +4,15 @@
 
 ### Frontend
 
-☑️   React
-☑️   redux
-☑️   redux saga
-☑️   reselect (memoization)
-☑️   Styled Components
+✔️   React<br/>
+✔️   redux<br/>
+✔️   redux saga<br/>
+✔️   reselect (memoization)<br/>
+✔️   Styled Components<br/>
 
 ### Backend
 
-☑️   firebase (database and user login)
-☑️   express (server)
-☑️   Heroku (hosting)
-☑️   Stripe (handling payments)
+✔️   firebase (database and user login)<br/>
+✔️   express (server)<br/>
+✔️   Heroku (hosting)<br/>
+✔️   Stripe (handling payments)<br/>
